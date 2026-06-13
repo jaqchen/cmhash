@@ -124,7 +124,7 @@ int cmhash_del(cmhash_t * chash_,
 
 	hashptr = oldhash = *chash;
 	if (hashptr == NULL)
-		return 0;
+		return -ENOENT;
 
 	HASH_FIND(cm_hh, hashptr, cmkey, cmlen, delhash);
 	if (delhash == NULL)
@@ -135,7 +135,7 @@ int cmhash_del(cmhash_t * chash_,
 	delhash->cm_klen = 0;
 	if (oldval != NULL)
 		*oldval = delhash->cm_val;
-	delhash->cm_val.cm_uint64 = 0ull;
+	cmval_zero(&delhash->cm_val);
 	free(delhash);
 
 	if (hashptr != oldhash)
