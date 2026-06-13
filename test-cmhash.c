@@ -1,5 +1,5 @@
 /*
- * Copyright (©) 2022 Ye Holmes <yeholmes@outlook.com>
+ * Copyright (©) 2022, 2026 yejq <yejq.jiaqiang@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ static int iterate_lhash(int count, void * whatp, const union cm_hval * hval)
 	(void) whatp;
 	keylen = 0;
 	tbuf[0] = '\0';
-	keystr = cmhash_getkey(hval, &keylen);
+	keystr = cmhash_key(hval, &keylen);
 	if (keystr && keylen && (keylen * 0x2 + 0x1) < sizeof(tbuf)) {
 		int jlen = 0;
 		unsigned int klen;
@@ -134,9 +134,9 @@ int main(int argc, char *argv[])
 		union cm_hval cmval;
 		rmaps[idx] = get_random_map();
 		if (rmaps[idx] != NULL) {
-			cm_hval_init(&cmval);
+			cmval_zero(&cmval);
 			cmval.cm_pointer = rmaps[idx];
-			ret = cmhash_addval(&hash,
+			ret = cmhash_add(&hash,
 				rmaps[idx]->key, rmaps[idx]->keylen, &cmval, NULL);
 			if (ret < 0) {
 				fprintf(stderr, "Error, failed to insert hash '%s': %d\n",
@@ -149,8 +149,8 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "Number entries in the hash table: %u\n", cmhash_count(hash));
 	if (rmaps[HASH_NUM / 2] != NULL) {
 		union cm_hval cmval;
-		cm_hval_init(&cmval);
-		ret = cmhash_delval(&hash, rmaps[HASH_NUM / 2]->key,
+		cmval_zero(&cmval);
+		ret = cmhash_del(&hash, rmaps[HASH_NUM / 2]->key,
 			rmaps[HASH_NUM / 2]->keylen, &cmval);
 		fprintf(stdout, "remove from hash returns %d, %p, %p\n",
 			ret, rmaps[HASH_NUM / 2], cmval.cm_pointer);
@@ -165,8 +165,8 @@ int main(int argc, char *argv[])
 		if (rmap == NULL)
 			continue;
 
-		cm_hval_init(&cmval);
-		ret = cmhash_getval(hash,
+		cmval_zero(&cmval);
+		ret = cmhash_get(hash,
 			rmap->key, rmap->keylen, &cmval);
 		if (ret < 0) {
 			fprintf(stderr, "[%02d] Error, failed to find hash '%s': %d\n",

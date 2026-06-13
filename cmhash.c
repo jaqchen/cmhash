@@ -1,5 +1,5 @@
 /*
- * Copyright (©) 2022 Ye Holmes <yeholmes@outlook.com>
+ * Copyright (©) 2022, 2026 yejq <yejq.jiaqiang@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ struct cmhash {
 	UT_hash_handle        cm_hh;     /* hash structure from uthash */
 };
 
-int cmhash_getval(cmhash_t chash_,
+int cmhash_get(cmhash_t chash_,
 	const void * cmkey, unsigned int cmlen,
 	union cm_hval * valp)
 {
@@ -56,7 +56,7 @@ int cmhash_getval(cmhash_t chash_,
 	return 0;
 }
 
-int cmhash_addval(cmhash_t * chash_,
+int cmhash_add(cmhash_t * chash_,
 	const void * cmkey, unsigned int cmlen,
 	const union cm_hval * valp, union cm_hval * oldval)
 {
@@ -106,7 +106,7 @@ int cmhash_addval(cmhash_t * chash_,
 	return 0;
 }
 
-int cmhash_delval(cmhash_t * chash_,
+int cmhash_del(cmhash_t * chash_,
 	const void * cmkey, unsigned int cmlen,
 	union cm_hval * oldval)
 {
@@ -161,7 +161,7 @@ int cmhash_iter(cmhash_t chash_, void * ppriv,
 	return 0;
 }
 
-const void * cmhash_getkey(const union cm_hval * cval, unsigned int * key_len)
+const void * cmhash_key(const union cm_hval * cval, unsigned int * key_len)
 {
 	struct cmhash * chash;
 	unsigned char * valaddr;
@@ -197,7 +197,7 @@ void cmhash_delete(cmhash_t * chash_)
 		HASH_DELETE(cm_hh, hashptr, iterhash);
 		iterhash->cm_key = NULL;
 		iterhash->cm_klen = 0;
-		cm_hval_init(&iterhash->cm_val);
+		cmval_zero(&iterhash->cm_val);
 		free(iterhash);
 	}
 	if (hashptr != oldhash)

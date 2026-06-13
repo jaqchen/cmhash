@@ -1,4 +1,4 @@
-#  Copyright 2022 Ye Holmes <yeholmes@outlook.com>
+#  Copyright (©) 2022, 2026 yejq <yejq.jiaqiang@gmail.com>
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.

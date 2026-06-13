@@ -1,5 +1,5 @@
 /*
- * Copyright (©) 2022 Ye Holmes <yeholmes@outlook.com>
+ * Copyright (©) 2022, 2026 yejq <yejq.jiaqiang@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ union cm_hval {
 	void *                cm_pointer;
 };
 
-static inline void cm_hval_init(union cm_hval * cmp)
+static inline void cmval_zero(union cm_hval * cmp)
 {
 	/* set maximum size of all 8 bytes to zero */
 	cmp->cm_uint64 = 0ull;
@@ -46,15 +46,15 @@ static inline void cm_hval_init(union cm_hval * cmp)
 
 typedef void * cmhash_t;
 
-int cmhash_getval(cmhash_t chash,
+int cmhash_get(cmhash_t chash,
 	const void * cmkey, unsigned int cmlen,
 	union cm_hval * valp);
 
-int cmhash_addval(cmhash_t * chash,
+int cmhash_add(cmhash_t * chash,
 	const void * cmkey, unsigned int cmlen,
 	const union cm_hval * valp, union cm_hval * oldval);
 
-int cmhash_delval(cmhash_t * chash,
+int cmhash_del(cmhash_t * chash,
 	const void * cmkey, unsigned int cmlen,
 	union cm_hval * oldval);
 
@@ -71,7 +71,7 @@ unsigned int cmhash_count(cmhash_t chash);
 int cmhash_iter(cmhash_t chash, void * ppriv,
 	int (* iter_func)(int, void *, const union cm_hval *));
 
-const void * cmhash_getkey(const union cm_hval * cval,
+const void * cmhash_key(const union cm_hval * cval,
 	unsigned int * key_len);
 
 #ifdef __cplusplus
