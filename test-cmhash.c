@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "=========================================================\n");
 	cmhash_iter(hash, NULL, iterate_lhash);
 
-	cmhash_delete(&hash);
+	cmhash_delete(&hash, NULL, NULL);
 	close(rand_fd);
 	rand_fd = -1;
 	return 0;

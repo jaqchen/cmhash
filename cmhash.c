@@ -181,8 +181,10 @@ const void * cmhash_key(const union cm_hval * cval, unsigned int * key_len)
 	return (const void *) chash->cm_key;
 }
 
-void cmhash_delete(cmhash_t * chash_)
+void cmhash_delete(cmhash_t * chash_, void * ppriv,
+	int (* free_func)(int, void *, const union cm_hval *))
 {
+	int count = 0;
 	struct cmhash * hashptr, * oldhash;
 	struct cmhash * iterhash, * temphash;
 	struct cmhash * * chash = (struct cmhash * *) chash_;
@@ -195,6 +197,8 @@ void cmhash_delete(cmhash_t * chash_)
 
 	HASH_ITER(cm_hh, hashptr, iterhash, temphash) {
 		HASH_DELETE(cm_hh, hashptr, iterhash);
+		if (free_func)
+			free_func(count++, ppriv, &iterhash->cm_val);
 		iterhash->cm_key = NULL;
 		iterhash->cm_klen = 0;
 		cmval_zero(&iterhash->cm_val);

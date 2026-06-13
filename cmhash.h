@@ -58,7 +58,8 @@ int cmhash_del(cmhash_t * chash,
 	const void * cmkey, unsigned int cmlen,
 	union cm_hval * oldval);
 
-void cmhash_delete(cmhash_t * chash);
+void cmhash_delete(cmhash_t * chash, void * ppriv,
+	int (* free_func)(int, void *, const union cm_hval *));
 
 unsigned int cmhash_count(cmhash_t chash);
 
